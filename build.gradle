@@ -1,0 +1,29 @@
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+mainClassName = 'com.contractanalizer.Main'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.web3j:core:3.1.1'
+    compile 'org.web3j:codegen:3.1.1'
+    compile 'org.apache.poi:poi:3.17'
+    compile 'org.apache.poi:poi-ooxml:3.17'
+    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.4.3'
+    testImplementation 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.8.0'
+}
+
+task solGenerator(type: JavaExec) {
+	description = 'Generate Java Wrapper for Solidity ABI'
+
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'com.contractanalizer.solidity.SolGen'
+	args 'bin/solidity'
+	args 'src/main/java'
+	args 'com.contractanalizer.contracts'
+}
